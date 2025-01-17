@@ -1,0 +1,84 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjhnrn4lipa27"]
+
+[ext_resource type="Texture2D" uid="uid://dr5812tmt1dqi" path="res://assets/sprites/placeholder/tile.png" id="2_dbevp"]
+
+[node name="Board Sprites" type="Node2D"]
+
+[node name="Tile" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+
+[node name="Tile5" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(0, 512)
+
+[node name="Tile9" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(0, 1024)
+
+[node name="Tile13" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(0, 1536)
+
+[node name="Tile2" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(512, 0)
+
+[node name="Tile6" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(512, 512)
+
+[node name="Tile10" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(512, 1024)
+
+[node name="Tile14" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(512, 1536)
+
+[node name="Tile3" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(1024, 0)
+
+[node name="Tile7" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(1024, 512)
+
+[node name="Tile11" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(1024, 1024)
+
+[node name="Tile15" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(1024, 1536)
+
+[node name="Tile4" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(1536, 0)
+
+[node name="Tile8" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(1536, 512)
+
+[node name="Tile12" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(1536, 1024)
+
+[node name="Tile16" type="Sprite2D" parent="."]
+position = Vector2(384, 384)
+texture = ExtResource("2_dbevp")
+offset = Vector2(1536, 1536)

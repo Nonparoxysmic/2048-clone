@@ -1,0 +1,12 @@
+class_name Common
+
+enum ItemType {
+	BERRY_2,
+	JUICE_4,
+	COOKIE_8,
+	TART_16,
+	CAKE_PLAIN_32,
+	CAKE_FROSTED_64,
+	CAKE_DECORATED_128,
+	PACKAGE_256
+}
