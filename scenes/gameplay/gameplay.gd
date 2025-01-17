@@ -26,10 +26,6 @@ func _ready() -> void:
 	spawn_item(Common.ItemType.PACKAGE_256, 2, 3)
 
 
-func _process(_delta: float) -> void:
-	pass
-
-
 func spawn_item(type: Common.ItemType, x: int, y: int) -> void:
 	var instance: Item = item_template.instantiate() as Item
 	if not instance:
@@ -37,6 +33,6 @@ func spawn_item(type: Common.ItemType, x: int, y: int) -> void:
 		printerr(message)
 		OS.alert(message, "Error")
 		return
+	item_parent.add_child(instance)
 	instance.set_sprite(type)
 	instance.position = Vector2(384 + 512 * x, 384 + 512 * y)
-	item_parent.add_child(instance)

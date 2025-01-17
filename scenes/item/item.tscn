@@ -4,6 +4,6 @@
 
 [node name="Item" type="Node2D" node_paths=PackedStringArray("sprite")]
 script = ExtResource("1_k7o8q")
-sprite = NodePath("Sprite2D")
+sprite = NodePath("ItemSprite")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="ItemSprite" type="Sprite2D" parent="."]
