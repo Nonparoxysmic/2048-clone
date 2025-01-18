@@ -10,5 +10,5 @@ func _ready() -> void:
 		OS.alert(message, "Error")
 
 
-func set_sprite(type: Common.ItemType) -> void:
+func set_sprite_texture(type: Common.ItemType) -> void:
 	sprite.texture = Stores.get_item_texture(type)
