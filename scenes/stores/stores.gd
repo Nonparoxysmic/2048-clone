@@ -4,7 +4,7 @@ var _item_textures: Array[Texture2D]
 
 func _ready() -> void:
 	_item_textures = [
-		Texture2D.new(), # TODO: missing texture
+		load("res://assets/sprites/missing_item_texture.png") as Texture2D,
 		load("res://assets/sprites/placeholder/berry.png") as Texture2D,
 		load("res://assets/sprites/placeholder/juice.png") as Texture2D,
 		load("res://assets/sprites/placeholder/cookie.png") as Texture2D,
