@@ -56,14 +56,13 @@ func on_item_created(id: int, type: Common.ItemType, x: int, y: int) -> void:
 	_items.set_item(id, created_item)
 
 
-func on_item_moved(id: int, x: int, y: int, _fade: Common.Fade) -> void:
+func on_item_moved(id: int, x: int, y: int, fade: Common.Fade) -> void:
 	if not _items.has(id):
 		var message: String = "Invalid item ID in node " + name + "."
 		printerr(message)
 		OS.alert(message, "Error")
 		return
-	_items.get_item(id).position = Vector2(384 + 512 * x, 384 + 512 * y)
-	# TODO: implement fading
+	_items.get_item(id).move_item(x, y, fade)
 
 
 func on_item_hidden(id: int, hidden: bool) -> void:
