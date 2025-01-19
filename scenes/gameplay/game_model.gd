@@ -20,8 +20,8 @@ func handle_input(direction: Common.Direction) -> void:
 	awaiting_input = false
 	if direction:
 		# TODO
-		item_moved.emit(999, 0, 0, Common.Fade.NONE)
-		item_hidden.emit(999, false)
+		item_moved.emit(0, 0, 0, Common.Fade.NONE)
+		item_hidden.emit(1, true)
 	awaiting_input = true
 
 

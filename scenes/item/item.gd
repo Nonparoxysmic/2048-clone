@@ -12,3 +12,10 @@ func _ready() -> void:
 
 func set_sprite_texture(type: Common.ItemType) -> void:
 	sprite.texture = Stores.get_item_texture(type)
+
+
+func set_hidden(do_hide: bool) -> void:
+	if do_hide:
+		sprite.self_modulate = Color(Color.WHITE, 0.0)
+	else:
+		sprite.self_modulate = Color(Color.WHITE, 1.0)

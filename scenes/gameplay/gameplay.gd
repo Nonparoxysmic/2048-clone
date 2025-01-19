@@ -2,6 +2,7 @@ extends Node
 
 @export var item_template: PackedScene
 var game_model: GameModel
+var _items: ItemDictionary = ItemDictionary.new()
 @onready var item_parent: Node = get_node("%Items")
 
 func _ready() -> void:
@@ -51,28 +52,38 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 
 func on_item_created(id: int, type: Common.ItemType, x: int, y: int) -> void:
-	# TODO
-	print("item created, id %d, type %d, pos (%d, %d)" % [id, type, x, y])
-	spawn_item(type, x, y)
+	var created_item: Item = spawn_item(id, type, x, y)
+	_items.set_item(id, created_item)
 
 
-func on_item_moved(id: int, x: int, y: int, fade: Common.Fade) -> void:
-	# TODO
-	print("item moved, id %d, pos (%d, %d), fade %d" % [id, x, y, fade])
+func on_item_moved(id: int, x: int, y: int, _fade: Common.Fade) -> void:
+	if not _items.has(id):
+		var message: String = "Invalid item ID in node " + name + "."
+		printerr(message)
+		OS.alert(message, "Error")
+		return
+	_items.get_item(id).position = Vector2(384 + 512 * x, 384 + 512 * y)
+	# TODO: implement fading
 
 
 func on_item_hidden(id: int, hidden: bool) -> void:
-	# TODO
-	print("item hidden, id %d, hidden %s" %[id, hidden])
+	if not _items.has(id):
+		var message: String = "Invalid item ID in node " + name + "."
+		printerr(message)
+		OS.alert(message, "Error")
+		return
+	_items.get_item(id).set_hidden(hidden)
 
 
-func spawn_item(type: Common.ItemType, x: int, y: int) -> void:
+func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:
 	var instance: Item = item_template.instantiate() as Item
 	if not instance:
 		var message: String = "Invalid Item instance in node " + name + "."
 		printerr(message)
 		OS.alert(message, "Error")
 		return
+	instance.name = "Item" + str(id)
 	item_parent.add_child(instance)
 	instance.set_sprite_texture(type)
 	instance.position = Vector2(384 + 512 * x, 384 + 512 * y)
+	return instance
