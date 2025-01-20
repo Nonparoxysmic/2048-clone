@@ -5,7 +5,8 @@ signal item_moved(id: int, x: int, y: int, fade: Common.Fade)
 signal item_hidden(id: int, hidden: bool)
 var awaiting_input: bool = true
 
-var _next_id: int = 0
+var _next_id: int = 1
+var _board: BoardModel = BoardModel.new()
 
 func start_game() -> void:
 	var start1: int = randi() % 16
@@ -19,17 +20,17 @@ func start_game() -> void:
 func handle_input(direction: Common.Direction) -> void:
 	awaiting_input = false
 	if direction:
-		# TODO
-		item_moved.emit(0, 0, 0, Common.Fade.NONE)
-		item_hidden.emit(1, true)
+		if _board.can_move_direction(direction):
+			# TODO: make move
+			print("make move in direction ", direction)
 	awaiting_input = true
 
 
 func create_item(type: Common.ItemType, x: int, y: int) -> void:
 	var id: int = _next_id
 	_next_id += 1
+	_board.set_item(id, type, x, y)
 	item_created.emit(id, type, x, y)
-	#return id
 
 
 func create_new_item(x: int, y: int) -> void:
