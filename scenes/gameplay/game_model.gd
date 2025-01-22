@@ -32,7 +32,6 @@ func handle_input(direction: Common.Direction) -> void:
 func create_item(type: Common.ItemType, x: int, y: int) -> int:
 	var id: int = _next_id
 	_next_id += 1
-	print("creating type %s, id %d at (%d, %d)" % [Common.ItemType.keys()[type], id, x, y])
 	_board.set_item(id, type, x, y)
 	item_created.emit(id, type, x, y)
 	return id
@@ -48,7 +47,6 @@ func create_new_item() -> int:
 
 
 func move_right() -> void:
-	print("moving right")
 	# for each row
 	for y: int in 4:
 		# collect the positions, ids, and types of items
@@ -80,11 +78,6 @@ func move_right() -> void:
 			for i: int in (ids.size() - 1):
 				if merges[i + 1]:
 					merges[i] = true
-		print("row %d..." % y)
-		print("init_x: ", init_x)
-		print("ids: ", ids)
-		print("types: ", types)
-		print("merges: ", merges)
 		# determine the moves
 		for new_x: int in range(3, -1, -1):
 			if ids.is_empty():
@@ -92,7 +85,6 @@ func move_right() -> void:
 				break
 			if merges[0]:
 				# item is merging
-				# TODO: two items move and fade out + spawn merge result
 				# move and fade first item
 				var old_x: int = init_x.pop_front()
 				var id: int = ids.pop_front()
@@ -117,20 +109,14 @@ func move_right() -> void:
 				var id: int = ids.pop_front()
 				var type: Common.ItemType = types.pop_front()
 				merges.pop_front()
-				if id != _board.get_item_id(old_x, y):
-					printerr("(%d, %d) expected id %d, found %d" % [old_x, y, id, _board.get_item_id(old_x, y)])
 				_board.remove_item(old_x, y)
 				_board.set_item(id, type, new_x, y)
 				item_moved.emit(id, new_x, y, Common.Fade.NONE)
-	print("end of player moves")
 	# after completing the player move, add a new item
 	create_new_item()
-	print("end of turn")
-	print("")
 
 
 func move_left() -> void:
-	print("moving left")
 	# for each row
 	for y: int in 4:
 		# collect the positions, ids, and types of items
@@ -162,11 +148,6 @@ func move_left() -> void:
 			for i: int in (ids.size() - 1):
 				if merges[i + 1]:
 					merges[i] = true
-		print("row %d..." % y)
-		print("init_x: ", init_x)
-		print("ids: ", ids)
-		print("types: ", types)
-		print("merges: ", merges)
 		# determine the moves
 		for new_x: int in 4:
 			if ids.is_empty():
@@ -198,21 +179,14 @@ func move_left() -> void:
 				var id: int = ids.pop_front()
 				var type: Common.ItemType = types.pop_front()
 				merges.pop_front()
-				if id != _board.get_item_id(old_x, y):
-					printerr("(%d, %d) expected id %d, found %d" % [old_x, y, id, _board.get_item_id(old_x, y)])
 				_board.remove_item(old_x, y)
 				_board.set_item(id, type, new_x, y)
 				item_moved.emit(id, new_x, y, Common.Fade.NONE)
-	print("end of player moves")
 	# after completing the player move, add a new item
 	create_new_item()
-	print("end of turn")
-	print("")
-
 
 
 func move_down() -> void:
-	print("moving down")
 	# for each column
 	for x: int in 4:
 		# collect the positions, ids, and types of items
@@ -244,11 +218,6 @@ func move_down() -> void:
 			for i: int in (ids.size() - 1):
 				if merges[i + 1]:
 					merges[i] = true
-		print("col %d..." % x)
-		print("init_y: ", init_y)
-		print("ids: ", ids)
-		print("types: ", types)
-		print("merges: ", merges)
 		# determine the moves
 		for new_y: int in range(3, -1, -1):
 			if ids.is_empty():
@@ -256,7 +225,6 @@ func move_down() -> void:
 				break
 			if merges[0]:
 				# item is merging
-				# TODO: two items move and fade out + spawn merge result
 				# move and fade first item
 				var old_y: int = init_y.pop_front()
 				var id: int = ids.pop_front()
@@ -281,20 +249,14 @@ func move_down() -> void:
 				var id: int = ids.pop_front()
 				var type: Common.ItemType = types.pop_front()
 				merges.pop_front()
-				#if id != _board.get_item_id(old_x, y):
-					#printerr("(%d, %d) expected id %d, found %d" % [old_x, y, id, _board.get_item_id(old_x, y)])
 				_board.remove_item(x, old_y)
 				_board.set_item(id, type, x, new_y)
 				item_moved.emit(id, x, new_y, Common.Fade.NONE)
-	print("end of player moves")
 	# after completing the player move, add a new item
 	create_new_item()
-	print("end of turn")
-	print("")
 
 
 func move_up() -> void:
-	print("moving up")
 	# for each column
 	for x: int in 4:
 		# collect the positions, ids, and types of items
@@ -326,11 +288,6 @@ func move_up() -> void:
 			for i: int in (ids.size() - 1):
 				if merges[i + 1]:
 					merges[i] = true
-		print("col %d..." % x)
-		print("init_y: ", init_y)
-		print("ids: ", ids)
-		print("types: ", types)
-		print("merges: ", merges)
 		# determine the moves
 		for new_y: int in 4:
 			if ids.is_empty():
@@ -362,13 +319,8 @@ func move_up() -> void:
 				var id: int = ids.pop_front()
 				var type: Common.ItemType = types.pop_front()
 				merges.pop_front()
-				#if id != _board.get_item_id(old_x, y):
-					#printerr("(%d, %d) expected id %d, found %d" % [old_x, y, id, _board.get_item_id(old_x, y)])
 				_board.remove_item(x, old_y)
 				_board.set_item(id, type, x, new_y)
 				item_moved.emit(id, x, new_y, Common.Fade.NONE)
-	print("end of player moves")
 	# after completing the player move, add a new item
 	create_new_item()
-	print("end of turn")
-	print("")
