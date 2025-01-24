@@ -3,7 +3,10 @@ extends Node
 @export var item_template: PackedScene
 var game_model: GameModel
 var _items: ItemDictionary = ItemDictionary.new()
-@onready var item_parent: Node = get_node("%Items")
+var _moves_made: int = 0
+var _game_ended: bool = false
+@onready var item_parent: Node = %Items
+@onready var counter: Label = %CounterLabel
 
 func _ready() -> void:
 	if not item_template:
@@ -35,11 +38,19 @@ func _ready() -> void:
 		printerr(message)
 		OS.alert(message, "Error")
 		return
+	connection_error = game_model.connect("move_completed", on_move_completed)
+	if connection_error:
+		var message: String = "Signal connection error in node " + name + "."
+		printerr(message)
+		OS.alert(message, "Error")
+		return
 	game_model.start_game()
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
 	if not game_model.awaiting_input:
+		return
+	if _game_ended:
 		return
 	if event.is_action_pressed("ui_up"):
 		game_model.handle_input(Common.Direction.UP)
@@ -72,6 +83,13 @@ func on_item_hidden(id: int, hidden: bool) -> void:
 		OS.alert(message, "Error")
 		return
 	_items.get_item(id).set_hidden(hidden)
+
+
+func on_move_completed() -> void:
+	_moves_made += 1
+	counter.text = str(150 - _moves_made)
+	if _moves_made >= 150:
+		_game_ended = true
 
 
 func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:

@@ -3,6 +3,7 @@ class_name GameModel
 signal item_created(id: int, type: Common.ItemType, x: int, y: int)
 signal item_moved(id: int, x: int, y: int, fade: Common.Fade)
 signal item_hidden(id: int, hidden: bool)
+signal move_completed()
 var awaiting_input: bool = true
 
 var _next_id: int = 1
@@ -26,6 +27,7 @@ func handle_input(direction: Common.Direction) -> void:
 					move_left()
 				Common.Direction.UP:
 					move_up()
+			move_completed.emit()
 	awaiting_input = true
 
 
