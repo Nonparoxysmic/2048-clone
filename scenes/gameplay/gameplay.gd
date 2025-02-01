@@ -5,6 +5,7 @@ var game_model: GameModel
 var _items: ItemDictionary = ItemDictionary.new()
 var _moves_made: int = 0
 var _game_ended: bool = false
+var _prev_move_time: int = -1000
 @onready var item_parent: Node = %Items
 @onready var counter: Label = %CounterLabel
 
@@ -48,6 +49,8 @@ func _ready() -> void:
 
 
 func _unhandled_key_input(event: InputEvent) -> void:
+	if (Time.get_ticks_msec() < _prev_move_time + 250):
+		return
 	if not game_model.awaiting_input:
 		return
 	if _game_ended:
@@ -86,6 +89,7 @@ func on_item_hidden(id: int, hidden: bool) -> void:
 
 
 func on_move_completed() -> void:
+	_prev_move_time = Time.get_ticks_msec()
 	_moves_made += 1
 	counter.text = str(150 - _moves_made)
 	if _moves_made >= 150:
