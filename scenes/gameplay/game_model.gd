@@ -1,6 +1,6 @@
 class_name GameModel
 
-signal item_created(id: int, type: Common.ItemType, x: int, y: int)
+signal item_created(id: int, type: Common.ItemType, x: int, y: int, merge: bool)
 signal item_moved(id: int, x: int, y: int, fade: Common.Fade)
 signal item_hidden(id: int, hidden: bool)
 signal move_completed()
@@ -31,11 +31,11 @@ func handle_input(direction: Common.Direction) -> void:
 	awaiting_input = true
 
 
-func create_item(type: Common.ItemType, x: int, y: int) -> int:
+func create_item(type: Common.ItemType, x: int, y: int, merge: bool) -> int:
 	var id: int = _next_id
 	_next_id += 1
 	_board.set_item(id, type, x, y)
-	item_created.emit(id, type, x, y)
+	item_created.emit(id, type, x, y, merge)
 	return id
 
 
@@ -43,9 +43,9 @@ func create_new_item() -> int:
 	var pos: Vector2i = _board.random_empty_position()
 	var is_berry: bool = randf() <= 0.9
 	if is_berry:
-		return create_item(Common.ItemType.BERRY_2, pos.x, pos.y)
+		return create_item(Common.ItemType.BERRY_2, pos.x, pos.y, false)
 	else:
-		return create_item(Common.ItemType.JUICE_4, pos.x, pos.y)
+		return create_item(Common.ItemType.JUICE_4, pos.x, pos.y, false)
 
 
 func move_right() -> void:
@@ -103,7 +103,7 @@ func move_right() -> void:
 				item_moved.emit(id, new_x, y, Common.Fade.OUT)
 				# spawn new item
 				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
-				var new_id: int = create_item(new_type, new_x, y)
+				var new_id: int = create_item(new_type, new_x, y, true)
 				_board.set_item(new_id, new_type, new_x, y)
 			else:
 				# item just slides
@@ -173,7 +173,7 @@ func move_left() -> void:
 				item_moved.emit(id, new_x, y, Common.Fade.OUT)
 				# spawn new item
 				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
-				var new_id: int = create_item(new_type, new_x, y)
+				var new_id: int = create_item(new_type, new_x, y, true)
 				_board.set_item(new_id, new_type, new_x, y)
 			else:
 				# item just slides
@@ -243,7 +243,7 @@ func move_down() -> void:
 				item_moved.emit(id, x, new_y, Common.Fade.OUT)
 				# spawn new item
 				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
-				var new_id: int = create_item(new_type, x, new_y)
+				var new_id: int = create_item(new_type, x, new_y, true)
 				_board.set_item(new_id, new_type, x, new_y)
 			else:
 				# item just slides
@@ -313,7 +313,7 @@ func move_up() -> void:
 				item_moved.emit(id, x, new_y, Common.Fade.OUT)
 				# spawn new item
 				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
-				var new_id: int = create_item(new_type, x, new_y)
+				var new_id: int = create_item(new_type, x, new_y, true)
 				_board.set_item(new_id, new_type, x, new_y)
 			else:
 				# item just slides

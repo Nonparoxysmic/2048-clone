@@ -14,6 +14,11 @@ enum Fade{
 	IN,
 }
 
+enum GameMode{
+	CLASSIC,
+	SWEET_SHOP
+}
+
 enum ItemType {
 	NONE,
 	BERRY_2,
@@ -28,3 +33,14 @@ enum ItemType {
 	SUNDAE_1024,
 	BANANA_SPLIT_2048,
 }
+
+
+static func commas(input: int) -> String:
+	var string = str(input)
+	var mod = string.length() % 3
+	var result = ""
+	for i in range(0, string.length()):
+		if i != 0 && i % 3 == mod:
+			result += ","
+		result += string[i]
+	return result

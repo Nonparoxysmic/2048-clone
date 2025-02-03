@@ -1,15 +1,19 @@
 extends Node
 
 @export var item_template: PackedScene
+var current_game_mode: Common.GameMode
 var game_model: GameModel
 var _items: ItemDictionary = ItemDictionary.new()
 var _moves_made: int = 0
+var _score: int = 0
 var _game_ended: bool = false
 var _prev_move_time: int = -1000
 @onready var item_parent: Node = %Items
 @onready var counter: Label = %CounterLabel
+@onready var counterTitle: Label = %CounterTitleLabel
 
 func _ready() -> void:
+	current_game_mode = Stores.game_mode
 	if not item_template:
 		var message: String = "Missing item scene reference in node " + name + "."
 		printerr(message)
@@ -45,6 +49,14 @@ func _ready() -> void:
 		printerr(message)
 		OS.alert(message, "Error")
 		return
+	if current_game_mode == Common.GameMode.CLASSIC:
+		counterTitle.text = "Score"
+		counter.text = "0"
+		counter.label_settings.font_size = 256
+	elif current_game_mode == Common.GameMode.SWEET_SHOP:
+		counterTitle.text = "Moves Remaining"
+		counter.text = "150"
+		counter.label_settings.font_size = 256
 	game_model.start_game()
 
 
@@ -65,9 +77,14 @@ func _unhandled_key_input(event: InputEvent) -> void:
 		game_model.handle_input(Common.Direction.RIGHT)
 
 
-func on_item_created(id: int, type: Common.ItemType, x: int, y: int) -> void:
+func on_item_created(id: int, type: Common.ItemType, x: int, y: int, merge: bool) -> void:
 	var created_item: Item = spawn_item(id, type, x, y)
 	_items.set_item(id, created_item)
+	if merge and current_game_mode == Common.GameMode.CLASSIC:
+		_score += pow(2, type)
+		counter.text = Common.commas(_score)
+		if _score > 999999:
+			counter.label_settings.font_size = 192
 
 
 func on_item_moved(id: int, x: int, y: int, fade: Common.Fade) -> void:
@@ -90,10 +107,11 @@ func on_item_hidden(id: int, hidden: bool) -> void:
 
 func on_move_completed() -> void:
 	_prev_move_time = Time.get_ticks_msec()
-	_moves_made += 1
-	counter.text = str(150 - _moves_made)
-	if _moves_made >= 150:
-		_game_ended = true
+	if current_game_mode == Common.GameMode.SWEET_SHOP:
+		_moves_made += 1
+		counter.text = str(150 - _moves_made)
+		if _moves_made >= 150:
+			_game_ended = true
 
 
 func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:

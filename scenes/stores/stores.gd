@@ -1,6 +1,7 @@
 extends Node
 ## global autoload
 
+var game_mode: Common.GameMode = Common.GameMode.SWEET_SHOP
 var _item_textures: Array[Texture2D]
 
 func _ready() -> void:
