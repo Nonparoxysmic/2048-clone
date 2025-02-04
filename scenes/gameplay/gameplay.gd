@@ -81,7 +81,7 @@ func on_item_created(id: int, type: Common.ItemType, x: int, y: int, merge: bool
 	var created_item: Item = spawn_item(id, type, x, y)
 	_items.set_item(id, created_item)
 	if merge and current_game_mode == Common.GameMode.CLASSIC:
-		_score += pow(2, type)
+		_score += 2 ** type
 		counter.text = Common.commas(_score)
 		if _score > 999999:
 			counter.label_settings.font_size = 192

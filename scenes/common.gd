@@ -36,10 +36,10 @@ enum ItemType {
 
 
 static func commas(input: int) -> String:
-	var string = str(input)
-	var mod = string.length() % 3
-	var result = ""
-	for i in range(0, string.length()):
+	var string: String = str(input)
+	var mod: int = string.length() % 3
+	var result: String = ""
+	for i: int in range(0, string.length()):
 		if i != 0 && i % 3 == mod:
 			result += ","
 		result += string[i]
