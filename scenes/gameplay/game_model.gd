@@ -48,6 +48,13 @@ func create_new_item() -> int:
 		return create_item(Common.ItemType.JUICE_4, pos.x, pos.y, false)
 
 
+func no_moves_available() -> bool:
+	for dir: int in range(1, 5):
+		if _board.can_move_direction(dir):
+			return false
+	return true
+
+
 func move_right() -> void:
 	# for each row
 	for y: int in 4:

@@ -112,6 +112,10 @@ func on_move_completed() -> void:
 		counter.text = str(150 - _moves_made)
 		if _moves_made >= 150:
 			_game_ended = true
+	if game_model.no_moves_available():
+		_game_ended = true
+	if _game_ended:
+		print("GAME END")
 
 
 func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:
