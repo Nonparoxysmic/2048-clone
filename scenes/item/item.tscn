@@ -7,3 +7,4 @@ script = ExtResource("1_k7o8q")
 sprite = NodePath("ItemSprite")
 
 [node name="ItemSprite" type="Sprite2D" parent="."]
+self_modulate = Color(1, 1, 1, 0)

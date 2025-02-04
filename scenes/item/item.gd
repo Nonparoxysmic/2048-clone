@@ -26,8 +26,13 @@ func move_item(x: int, y: int, fade: Common.Fade) -> void:
 
 
 func set_hidden(do_hide: bool) -> void:
-	# TODO: animate
+	var tween: Tween = create_tween()
 	if do_hide:
-		sprite.self_modulate = Color.TRANSPARENT
+		tween.tween_property(sprite, "self_modulate", Color.TRANSPARENT, _slide_time)
 	else:
-		sprite.self_modulate = Color.WHITE
+		tween.tween_property(sprite, "self_modulate", Color.WHITE, _slide_time)
+		sprite.scale = Vector2(0.5, 0.5)
+		var tween2: Tween = create_tween()
+		tween2.set_ease(Tween.EASE_OUT)
+		tween2.set_trans(Tween.TRANS_ELASTIC)
+		tween2.tween_property(sprite, "scale", Vector2.ONE, _slide_time * 4)

@@ -129,4 +129,5 @@ func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:
 	item_parent.add_child(instance)
 	instance.set_sprite_texture(type)
 	instance.position = Vector2(384 + 512 * x, 384 + 512 * y)
+	instance.set_hidden(false)
 	return instance
