@@ -1,0 +1,19 @@
+[gd_scene load_steps=2 format=3 uid="uid://cg36jyec376hf"]
+
+[ext_resource type="Script" path="res://scenes/main_menu/high_score.gd" id="1_3xdm2"]
+
+[node name="High Score" type="HBoxContainer"]
+script = ExtResource("1_3xdm2")
+
+[node name="NameLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 128
+text = "name"
+
+[node name="ScoreLabel" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_font_sizes/font_size = 128
+text = "score"

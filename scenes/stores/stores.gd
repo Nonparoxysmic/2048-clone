@@ -62,6 +62,28 @@ func get_item_texture(type: Common.ItemType) -> Texture2D:
 			return _item_textures[0]
 
 
+func new_high_score(score: int) -> bool:
+	return score > _high_scores[9]
+
+
+func add_score(title: String, score: int) -> void:
+	if score <= _high_scores[9]:
+		return
+	for i: int in range(8, -1, -1):
+		if score <= _high_scores[i]:
+			_high_scores.insert(i + 1, score)
+			_high_score_names.insert(i + 1, title)
+			_high_scores.pop_back()
+			_high_score_names.pop_back()
+			_save_high_scores()
+			return
+	_high_scores.push_front(score)
+	_high_scores.pop_back()
+	_high_score_names.push_front(title)
+	_high_score_names.pop_back()
+	_save_high_scores()
+
+
 func _load_high_scores() -> void:
 	if not FileAccess.file_exists(_high_score_filename):
 		return

@@ -115,7 +115,10 @@ func on_move_completed() -> void:
 	if game_model.no_moves_available():
 		_game_ended = true
 	if _game_ended:
-		print("GAME END")
+		if current_game_mode == Common.GameMode.CLASSIC:
+			if Stores.new_high_score(_score):
+				Stores.add_score(Time.get_datetime_string_from_system(false, true), _score)
+		# TODO: handle game end
 
 
 func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:

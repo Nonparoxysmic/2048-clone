@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://ccc747hndew3w"]
+[gd_scene load_steps=4 format=3 uid="uid://ccc747hndew3w"]
 
 [ext_resource type="Script" path="res://scenes/main_menu/main_menu.gd" id="1_ciq2r"]
+[ext_resource type="PackedScene" uid="uid://cg36jyec376hf" path="res://scenes/main_menu/high_score.tscn" id="2_f5ko2"]
 
 [sub_resource type="Theme" id="Theme_2ht3q"]
 default_font_size = 256
@@ -10,27 +11,54 @@ layout_mode = 3
 anchors_preset = 0
 theme = SubResource("Theme_2ht3q")
 script = ExtResource("1_ciq2r")
+high_score = ExtResource("2_f5ko2")
 
 [node name="CenterContainer" type="CenterContainer" parent="."]
 layout_mode = 0
 offset_right = 4096.0
 offset_bottom = 2560.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+[node name="MainButtons" type="VBoxContainer" parent="CenterContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 128
 
-[node name="SweetShopButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="SweetShopButton" type="Button" parent="CenterContainer/MainButtons"]
 custom_minimum_size = Vector2(2000, 400)
 layout_mode = 2
 focus_mode = 0
 text = "Sweet Shop"
 
-[node name="ClassicButton" type="Button" parent="CenterContainer/VBoxContainer"]
+[node name="ClassicButton" type="Button" parent="CenterContainer/MainButtons"]
 custom_minimum_size = Vector2(2000, 400)
 layout_mode = 2
 focus_mode = 0
 text = "2048"
 
-[connection signal="pressed" from="CenterContainer/VBoxContainer/SweetShopButton" to="." method="_on_sweet_shop_button_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/ClassicButton" to="." method="_on_classic_button_pressed"]
+[node name="HighScoresButton" type="Button" parent="CenterContainer/MainButtons"]
+custom_minimum_size = Vector2(2000, 400)
+layout_mode = 2
+text = "High Scores"
+
+[node name="HighScores" type="VBoxContainer" parent="CenterContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+theme_override_constants/separation = 64
+
+[node name="HighScoreContainer" type="VBoxContainer" parent="CenterContainer/HighScores"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(2560, 0)
+layout_mode = 2
+
+[node name="HighScoresBackButton" type="Button" parent="CenterContainer/HighScores"]
+custom_minimum_size = Vector2(1600, 320)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 128
+text = "Back to Main Menu"
+
+[connection signal="pressed" from="CenterContainer/MainButtons/SweetShopButton" to="." method="_on_sweet_shop_button_pressed"]
+[connection signal="pressed" from="CenterContainer/MainButtons/ClassicButton" to="." method="_on_classic_button_pressed"]
+[connection signal="pressed" from="CenterContainer/MainButtons/HighScoresButton" to="." method="_on_high_scores_button_pressed"]
+[connection signal="pressed" from="CenterContainer/HighScores/HighScoresBackButton" to="." method="_on_high_scores_back_button_pressed"]
