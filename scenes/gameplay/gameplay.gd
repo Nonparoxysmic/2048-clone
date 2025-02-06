@@ -14,7 +14,7 @@ var _prev_move_time: int = -1000
 @onready var debug_value: LineEdit = %DebugValue
 
 func _ready() -> void:
-	current_game_mode = Stores.game_mode
+	current_game_mode = GlobalData.game_mode
 	if not item_template:
 		var message: String = "Missing item scene reference in node " + name + "."
 		printerr(message)
@@ -137,8 +137,8 @@ func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:
 func handle_game_end() -> void:
 	# TODO: handle game end
 	if current_game_mode == Common.GameMode.CLASSIC:
-		if Stores.new_high_score(_score):
-			Stores.add_score(Time.get_datetime_string_from_system(false, true), _score)
+		if HighScores.is_new_high_score(_score):
+			HighScores.add_score(Time.get_datetime_string_from_system(false, true), _score)
 
 
 func debug_end_game() -> void:

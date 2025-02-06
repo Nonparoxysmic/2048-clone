@@ -12,7 +12,7 @@ func _ready() -> void:
 
 
 func set_sprite_texture(type: Common.ItemType) -> void:
-	sprite.texture = Stores.get_item_texture(type)
+	sprite.texture = Textures.get_item_texture(type)
 
 
 func move_item(x: int, y: int, fade: Common.Fade) -> void:

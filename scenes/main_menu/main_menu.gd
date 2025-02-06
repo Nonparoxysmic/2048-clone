@@ -10,10 +10,11 @@ func _ready() -> void:
 	if not high_score:
 		return
 	for i: int in 10:
-		if Stores._high_scores[i] > 0:
+		# TODO: don't reference HighScores arrays
+		if HighScores._high_scores[i] > 0:
 			var node: HighScore = high_score.instantiate()
 			high_score_container.add_child(node)
-			node.set_data(Stores._high_score_names[i], Stores._high_scores[i])
+			node.set_data(HighScores._high_score_titles[i], HighScores._high_scores[i])
 
 
 func _start_game() -> void:
@@ -23,12 +24,12 @@ func _start_game() -> void:
 
 
 func _on_sweet_shop_button_pressed() -> void:
-	Stores.game_mode = Common.GameMode.SWEET_SHOP
+	GlobalData.game_mode = Common.GameMode.SWEET_SHOP
 	_start_game()
 
 
 func _on_classic_button_pressed() -> void:
-	Stores.game_mode = Common.GameMode.CLASSIC
+	GlobalData.game_mode = Common.GameMode.CLASSIC
 	_start_game()
 
 

@@ -17,7 +17,9 @@ config/icon="res://assets/icon/default.svg"
 
 [autoload]
 
-Stores="*res://scenes/stores/stores.tscn"
+Textures="*res://scenes/autoloads/textures/textures.tscn"
+HighScores="*res://scenes/autoloads/high_scores/high_scores.tscn"
+GlobalData="*res://scenes/autoloads/global_data/global_data.tscn"
 
 [debug]
 
