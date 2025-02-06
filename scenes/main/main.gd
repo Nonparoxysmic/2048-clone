@@ -4,15 +4,19 @@ extends Node
 @export var title_screen_scene: PackedScene
 @export var main_menu_scene: PackedScene
 @export var gameplay_scene: PackedScene
+var current: Node
 
 
 func _ready() -> void:
 	if title_screen_scene:
-		add_child(title_screen_scene.instantiate())
+		current = title_screen_scene.instantiate()
+		add_child(current)
 	elif main_menu_scene:
-		add_child(main_menu_scene.instantiate())
+		current = main_menu_scene.instantiate()
+		add_child(current)
 	elif gameplay_scene:
-		add_child(gameplay_scene.instantiate())
+		gameplay_scene.instantiate()
+		add_child(current)
 	else:
 		var message: String = "No scene references in node " + name + "."
 		printerr(message)
@@ -20,5 +24,12 @@ func _ready() -> void:
 
 
 func start_gameplay() -> void:
-	get_child(0).queue_free()
-	add_child(gameplay_scene.instantiate())
+	current.queue_free()
+	current = gameplay_scene.instantiate()
+	add_child(current)
+
+
+func go_to_main_menu() -> void:
+	current.queue_free()
+	current = main_menu_scene.instantiate()
+	add_child(current)

@@ -48,6 +48,12 @@ func create_new_item() -> int:
 		return create_item(Common.ItemType.JUICE_4, pos.x, pos.y, false)
 
 
+func debug_create_item(type: Common.ItemType) -> void:
+	var pos: Vector2i = _board.random_empty_position()
+	var new_id: int = create_item(type, pos.x, pos.y, false)
+	_board.set_item(new_id, type, pos.x, pos.y)
+
+
 func no_moves_available() -> bool:
 	for dir: int in range(1, 5):
 		if _board.can_move_direction(dir):

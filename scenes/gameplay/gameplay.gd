@@ -10,7 +10,8 @@ var _game_ended: bool = false
 var _prev_move_time: int = -1000
 @onready var item_parent: Node = %Items
 @onready var counter: Label = %CounterLabel
-@onready var counterTitle: Label = %CounterTitleLabel
+@onready var counter_title: Label = %CounterTitleLabel
+@onready var debug_value: LineEdit = %DebugValue
 
 func _ready() -> void:
 	current_game_mode = Stores.game_mode
@@ -50,11 +51,11 @@ func _ready() -> void:
 		OS.alert(message, "Error")
 		return
 	if current_game_mode == Common.GameMode.CLASSIC:
-		counterTitle.text = "Score"
+		counter_title.text = "Score"
 		counter.text = "0"
 		counter.label_settings.font_size = 256
 	elif current_game_mode == Common.GameMode.SWEET_SHOP:
-		counterTitle.text = "Moves Remaining"
+		counter_title.text = "Moves Remaining"
 		counter.text = "150"
 		counter.label_settings.font_size = 256
 	game_model.start_game()
@@ -115,10 +116,7 @@ func on_move_completed() -> void:
 	if game_model.no_moves_available():
 		_game_ended = true
 	if _game_ended:
-		if current_game_mode == Common.GameMode.CLASSIC:
-			if Stores.new_high_score(_score):
-				Stores.add_score(Time.get_datetime_string_from_system(false, true), _score)
-		# TODO: handle game end
+		handle_game_end()
 
 
 func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:
@@ -134,3 +132,49 @@ func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:
 	instance.position = Vector2(384 + 512 * x, 384 + 512 * y)
 	instance.set_hidden(false)
 	return instance
+
+
+func handle_game_end() -> void:
+	# TODO: handle game end
+	if current_game_mode == Common.GameMode.CLASSIC:
+		if Stores.new_high_score(_score):
+			Stores.add_score(Time.get_datetime_string_from_system(false, true), _score)
+
+
+func debug_end_game() -> void:
+	_game_ended = true
+	handle_game_end()
+
+
+func debug_set_score() -> void:
+	_score = int(debug_value.text)
+	debug_value.text = ""
+	debug_value.release_focus()
+	counter.text = Common.commas(_score)
+	if _score > 999999:
+		counter.label_settings.font_size = 192
+	else:
+		counter.label_settings.font_size = 256
+
+
+func debug_set_moves() -> void:
+	_moves_made = 150 - int(debug_value.text)
+	debug_value.text = ""
+	debug_value.release_focus()
+	counter.text = str(150 - _moves_made)
+	if _moves_made >= 150:
+		_game_ended = true
+		handle_game_end()
+
+
+func debug_quit() -> void:
+	var parent: Main = get_parent() as Main
+	if parent:
+		parent.go_to_main_menu()
+
+
+func debug_summon_item() -> void:
+	var type: int = int(debug_value.text) % Common.ItemType.size()
+	debug_value.text = ""
+	debug_value.release_focus()
+	game_model.debug_create_item(type)
