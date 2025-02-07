@@ -1,10 +1,15 @@
-[gd_scene load_steps=7 format=3 uid="uid://btprlukab7rm8"]
+[gd_scene load_steps=8 format=3 uid="uid://btprlukab7rm8"]
 
 [ext_resource type="Script" path="res://scenes/gameplay/gameplay.gd" id="1_0cgb7"]
 [ext_resource type="PackedScene" uid="uid://bjhnrn4lipa27" path="res://scenes/board_sprites/board_sprites.tscn" id="1_aupdx"]
 [ext_resource type="PackedScene" uid="uid://dw1ve5kyd7seu" path="res://scenes/item/item.tscn" id="2_ec4vv"]
 [ext_resource type="Texture2D" uid="uid://5dba2i3omnr4" path="res://assets/sprites/placeholder/scoreboard_bg.png" id="4_rmydm"]
 [ext_resource type="PackedScene" uid="uid://cg3odyqy17w11" path="res://scenes/gameplay/counter.tscn" id="5_v2pq2"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8xnb8"]
+font_size = 154
+outline_size = 30
+outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Theme" id="Theme_071mw"]
 default_font_size = 64
@@ -13,25 +18,33 @@ default_font_size = 64
 script = ExtResource("1_0cgb7")
 item_template = ExtResource("2_ec4vv")
 
-[node name="Game Board" type="Node2D" parent="."]
-position = Vector2(1280, 1280)
-
-[node name="Board Sprites" parent="Game Board" instance=ExtResource("1_aupdx")]
-position = Vector2(-1152, -1152)
-
-[node name="Items" type="Node2D" parent="Game Board"]
+[node name="Background" type="Node2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(-1152, -1152)
 
-[node name="Scoreboard" type="Node2D" parent="."]
+[node name="Board Sprites" parent="Background" instance=ExtResource("1_aupdx")]
+position = Vector2(128, 128)
+
+[node name="Scoreboard Sprite" type="Sprite2D" parent="Background"]
 position = Vector2(3200, 1280)
-
-[node name="Background" type="Sprite2D" parent="Scoreboard"]
 texture = ExtResource("4_rmydm")
 
-[node name="Counter" parent="Scoreboard" instance=ExtResource("5_v2pq2")]
+[node name="Counter" parent="Background" instance=ExtResource("5_v2pq2")]
 unique_name_in_owner = true
-position = Vector2(0, -512)
+position = Vector2(3200, 768)
+
+[node name="Items" type="Node2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(128, 128)
+
+[node name="GameOverLabel" type="Label" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0)
+offset_left = 646.0
+offset_top = 1173.0
+offset_right = 2226.0
+offset_bottom = 1436.0
+text = "Game completed"
+label_settings = SubResource("LabelSettings_8xnb8")
 
 [node name="Debug Menu" type="HBoxContainer" parent="."]
 anchors_preset = 3

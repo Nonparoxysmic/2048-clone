@@ -8,8 +8,10 @@ var _moves_made: int = 0
 var _score: int = 0
 var _game_ended: bool = false
 var _prev_move_time: int = -1000
+@onready var background: Node = %Background
 @onready var item_parent: Node = %Items
 @onready var counter: Counter = %Counter
+@onready var game_over_label: Label = %GameOverLabel
 @onready var debug_value: LineEdit = %DebugValue
 
 func _ready() -> void:
@@ -128,10 +130,21 @@ func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:
 
 
 func handle_game_end() -> void:
-	# TODO: handle game end
+	var text_tween: Tween = create_tween()
+	text_tween.tween_property(game_over_label, "self_modulate", Color.WHITE, 0.25)
 	if current_game_mode == Common.GameMode.CLASSIC:
 		if HighScores.is_new_high_score(_score):
-			HighScores.add_score(Time.get_datetime_string_from_system(false, true), _score)
+			HighScores.add_score_with_datetime(_score)
+	elif current_game_mode == Common.GameMode.SWEET_SHOP:
+		await get_tree().create_timer(2).timeout
+		game_over_label.self_modulate = Color.TRANSPARENT
+		var bg_tween: Tween = create_tween()
+		bg_tween.tween_property(background, "modulate", Color.TRANSPARENT, 3.0)
+		var current_ids: Array[int] = game_model.get_current_item_ids()
+		for id: int in current_ids:
+			if id > 0:
+				_items.get_item(id).convert_to_reward()
+		# TODO: add up rewards
 
 
 func debug_end_game() -> void:

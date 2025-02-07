@@ -18,6 +18,10 @@ func is_new_high_score(score: int) -> bool:
 	return score > _high_scores[9]
 
 
+func add_score_with_datetime(score: int) -> void:
+	add_score(Time.get_datetime_string_from_system(false, true), score)
+
+
 func add_score(title: String, score: int) -> void:
 	if score <= _high_scores[9]:
 		return

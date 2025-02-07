@@ -10,10 +10,15 @@ var direction_vectors: Array[Vector2i] = [
 var _ids: Array[int]
 var _types: Array[Common.ItemType]
 
+
 func _init() -> void:
 	for i: int in 16:
 		_ids.append(0)
 		_types.append(Common.ItemType.NONE)
+
+
+func get_all_ids() -> Array[int]:
+	return _ids
 
 
 func get_item_id(x: int, y: int) -> int:

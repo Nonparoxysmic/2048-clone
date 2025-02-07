@@ -61,6 +61,10 @@ func no_moves_available() -> bool:
 	return true
 
 
+func get_current_item_ids() -> Array[int]:
+	return _board.get_all_ids()
+
+
 func move_right() -> void:
 	# for each row
 	for y: int in 4:
