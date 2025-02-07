@@ -35,7 +35,7 @@ enum ItemType {
 }
 
 
-static func commas(input: int) -> String:
+static func format_number(input: int) -> String:
 	var string: String = str(input)
 	var mod: int = string.length() % 3
 	var result: String = ""

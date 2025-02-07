@@ -7,4 +7,4 @@ extends HBoxContainer
 
 func set_data(title: String, score: int) -> void:
 	name_label.text = title
-	score_label.text = Common.commas(score)
+	score_label.text = Common.format_number(score)

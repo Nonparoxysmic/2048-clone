@@ -9,8 +9,7 @@ var _score: int = 0
 var _game_ended: bool = false
 var _prev_move_time: int = -1000
 @onready var item_parent: Node = %Items
-@onready var counter: Label = %CounterLabel
-@onready var counter_title: Label = %CounterTitleLabel
+@onready var counter: Counter = %Counter
 @onready var debug_value: LineEdit = %DebugValue
 
 func _ready() -> void:
@@ -51,13 +50,9 @@ func _ready() -> void:
 		OS.alert(message, "Error")
 		return
 	if current_game_mode == Common.GameMode.CLASSIC:
-		counter_title.text = "Score"
-		counter.text = "0"
-		counter.label_settings.font_size = 256
+		counter.initialize("Score", 0, false)
 	elif current_game_mode == Common.GameMode.SWEET_SHOP:
-		counter_title.text = "Moves Remaining"
-		counter.text = "150"
-		counter.label_settings.font_size = 256
+		counter.initialize("Moves Remaining", 150, true)
 	game_model.start_game()
 
 
@@ -83,9 +78,7 @@ func on_item_created(id: int, type: Common.ItemType, x: int, y: int, merge: bool
 	_items.set_item(id, created_item)
 	if merge and current_game_mode == Common.GameMode.CLASSIC:
 		_score += 2 ** type
-		counter.text = Common.commas(_score)
-		if _score > 999999:
-			counter.label_settings.font_size = 192
+		counter.update(_score)
 
 
 func on_item_moved(id: int, x: int, y: int, fade: Common.Fade) -> void:
@@ -110,7 +103,7 @@ func on_move_completed() -> void:
 	_prev_move_time = Time.get_ticks_msec()
 	if current_game_mode == Common.GameMode.SWEET_SHOP:
 		_moves_made += 1
-		counter.text = str(150 - _moves_made)
+		counter.update(150 - _moves_made)
 		if _moves_made >= 150:
 			_game_ended = true
 	if game_model.no_moves_available():
@@ -150,18 +143,14 @@ func debug_set_score() -> void:
 	_score = int(debug_value.text)
 	debug_value.text = ""
 	debug_value.release_focus()
-	counter.text = Common.commas(_score)
-	if _score > 999999:
-		counter.label_settings.font_size = 192
-	else:
-		counter.label_settings.font_size = 256
+	counter.update(_score)
 
 
 func debug_set_moves() -> void:
 	_moves_made = 150 - int(debug_value.text)
 	debug_value.text = ""
 	debug_value.release_focus()
-	counter.text = str(150 - _moves_made)
+	counter.update(150 - _moves_made)
 	if _moves_made >= 150:
 		_game_ended = true
 		handle_game_end()
