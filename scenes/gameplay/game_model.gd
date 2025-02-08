@@ -1,8 +1,7 @@
 class_name GameModel
 
 signal item_created(id: int, type: Common.ItemType, x: int, y: int, merge: bool)
-signal item_moved(id: int, x: int, y: int, fade: Common.Fade)
-signal item_hidden(id: int, hidden: bool)
+signal item_moved(id: int, x: int, y: int, fade: bool)
 signal move_completed()
 var awaiting_input: bool = true
 
@@ -110,14 +109,14 @@ func move_right() -> void:
 				var type: Common.ItemType = types.pop_front()
 				merges.pop_front()
 				_board.remove_item(old_x, y)
-				item_moved.emit(id, new_x, y, Common.Fade.OUT)
+				item_moved.emit(id, new_x, y, true)
 				# move and fade second item
 				old_x = init_x.pop_front()
 				id = ids.pop_front()
 				type = types.pop_front()
 				merges.pop_front()
 				_board.remove_item(old_x, y)
-				item_moved.emit(id, new_x, y, Common.Fade.OUT)
+				item_moved.emit(id, new_x, y, true)
 				# spawn new item
 				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
 				var new_id: int = create_item(new_type, new_x, y, true)
@@ -130,7 +129,7 @@ func move_right() -> void:
 				merges.pop_front()
 				_board.remove_item(old_x, y)
 				_board.set_item(id, type, new_x, y)
-				item_moved.emit(id, new_x, y, Common.Fade.NONE)
+				item_moved.emit(id, new_x, y, false)
 	# after completing the player move, add a new item
 	create_new_item()
 
@@ -180,14 +179,14 @@ func move_left() -> void:
 				var type: Common.ItemType = types.pop_front()
 				merges.pop_front()
 				_board.remove_item(old_x, y)
-				item_moved.emit(id, new_x, y, Common.Fade.OUT)
+				item_moved.emit(id, new_x, y, true)
 				# move and fade second item
 				old_x = init_x.pop_front()
 				id = ids.pop_front()
 				type = types.pop_front()
 				merges.pop_front()
 				_board.remove_item(old_x, y)
-				item_moved.emit(id, new_x, y, Common.Fade.OUT)
+				item_moved.emit(id, new_x, y, true)
 				# spawn new item
 				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
 				var new_id: int = create_item(new_type, new_x, y, true)
@@ -200,7 +199,7 @@ func move_left() -> void:
 				merges.pop_front()
 				_board.remove_item(old_x, y)
 				_board.set_item(id, type, new_x, y)
-				item_moved.emit(id, new_x, y, Common.Fade.NONE)
+				item_moved.emit(id, new_x, y, false)
 	# after completing the player move, add a new item
 	create_new_item()
 
@@ -250,14 +249,14 @@ func move_down() -> void:
 				var type: Common.ItemType = types.pop_front()
 				merges.pop_front()
 				_board.remove_item(x, old_y)
-				item_moved.emit(id, x, new_y, Common.Fade.OUT)
+				item_moved.emit(id, x, new_y, true)
 				# move and fade second item
 				old_y = init_y.pop_front()
 				id = ids.pop_front()
 				type = types.pop_front()
 				merges.pop_front()
 				_board.remove_item(x, old_y)
-				item_moved.emit(id, x, new_y, Common.Fade.OUT)
+				item_moved.emit(id, x, new_y, true)
 				# spawn new item
 				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
 				var new_id: int = create_item(new_type, x, new_y, true)
@@ -270,7 +269,7 @@ func move_down() -> void:
 				merges.pop_front()
 				_board.remove_item(x, old_y)
 				_board.set_item(id, type, x, new_y)
-				item_moved.emit(id, x, new_y, Common.Fade.NONE)
+				item_moved.emit(id, x, new_y, false)
 	# after completing the player move, add a new item
 	create_new_item()
 
@@ -320,14 +319,14 @@ func move_up() -> void:
 				var type: Common.ItemType = types.pop_front()
 				merges.pop_front()
 				_board.remove_item(x, old_y)
-				item_moved.emit(id, x, new_y, Common.Fade.OUT)
+				item_moved.emit(id, x, new_y, true)
 				# move and fade second item
 				old_y = init_y.pop_front()
 				id = ids.pop_front()
 				type = types.pop_front()
 				merges.pop_front()
 				_board.remove_item(x, old_y)
-				item_moved.emit(id, x, new_y, Common.Fade.OUT)
+				item_moved.emit(id, x, new_y, true)
 				# spawn new item
 				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
 				var new_id: int = create_item(new_type, x, new_y, true)
@@ -340,6 +339,6 @@ func move_up() -> void:
 				merges.pop_front()
 				_board.remove_item(x, old_y)
 				_board.set_item(id, type, x, new_y)
-				item_moved.emit(id, x, new_y, Common.Fade.NONE)
+				item_moved.emit(id, x, new_y, false)
 	# after completing the player move, add a new item
 	create_new_item()

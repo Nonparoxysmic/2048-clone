@@ -9,7 +9,8 @@ reward_sprite = NodePath("RewardSprite")
 
 [node name="ItemSprite" type="Sprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0)
+scale = Vector2(0.5, 0.5)
 
 [node name="RewardSprite" type="Sprite2D" parent="."]
 self_modulate = Color(1, 1, 1, 0)
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.25, 0.25)

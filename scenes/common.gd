@@ -8,12 +8,6 @@ enum Direction{
 	UP,
 }
 
-enum Fade{
-	NONE,
-	OUT,
-	IN,
-}
-
 enum GameMode{
 	CLASSIC,
 	SWEET_SHOP

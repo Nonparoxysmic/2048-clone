@@ -39,12 +39,6 @@ func _ready() -> void:
 		printerr(message)
 		OS.alert(message, "Error")
 		return
-	connection_error = game_model.connect("item_hidden", on_item_hidden)
-	if connection_error:
-		var message: String = "Signal connection error in node " + name + "."
-		printerr(message)
-		OS.alert(message, "Error")
-		return
 	connection_error = game_model.connect("move_completed", on_move_completed)
 	if connection_error:
 		var message: String = "Signal connection error in node " + name + "."
@@ -83,22 +77,13 @@ func on_item_created(id: int, type: Common.ItemType, x: int, y: int, merge: bool
 		counter.update(_score)
 
 
-func on_item_moved(id: int, x: int, y: int, fade: Common.Fade) -> void:
+func on_item_moved(id: int, x: int, y: int, fade: bool) -> void:
 	if not _items.has(id):
 		var message: String = "Invalid item ID in node " + name + "."
 		printerr(message)
 		OS.alert(message, "Error")
 		return
 	_items.get_item(id).move_item(x, y, fade)
-
-
-func on_item_hidden(id: int, hidden: bool) -> void:
-	if not _items.has(id):
-		var message: String = "Invalid item ID in node " + name + "."
-		printerr(message)
-		OS.alert(message, "Error")
-		return
-	_items.get_item(id).set_hidden(hidden)
 
 
 func on_move_completed() -> void:
@@ -123,9 +108,9 @@ func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:
 		return
 	instance.name = "Item" + str(id)
 	item_parent.add_child(instance)
-	instance.set_sprite_texture(type)
+	instance.set_sprite_textures(type)
 	instance.position = Vector2(384 + 512 * x, 384 + 512 * y)
-	instance.set_hidden(false)
+	instance.reveal()
 	return instance
 
 
