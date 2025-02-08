@@ -4,7 +4,8 @@ extends Node2D
 var _count: int
 var _is_countdown: bool
 var _default_color: Color = Color("483117")
-var _danger_color: Color = Color.DARK_RED # TODO: pick a color
+var _danger_color: Color = Color("990000")
+var _danger_tween: Tween
 @onready var title_label: Label = %TitleLabel
 @onready var count_label: Label = %NumberLabel
 
@@ -24,19 +25,35 @@ func update(count: int) -> void:
 
 
 func _update() -> void:
-	var tween: Tween = create_tween()
-	tween.tween_property(count_label, "scale", Vector2(0.75, 0.75), 0.125)
-	tween.tween_property(count_label, "scale", Vector2.ONE, 0.125)
+	#region Update Text
 	count_label.text = Common.format_number(_count)
-	if _count > 999999:
-		count_label.label_settings.font_size = 192
+	count_label.label_settings.font_size = 192 if _count > 999999 else 256
+	count_label.label_settings.font_color = \
+		_danger_color if _is_countdown and _count < 6 else _default_color
+	#endregion Update Text
+	#region Animations
+	# Create tweens
+	var update_tween: Tween = create_tween()
+	if not _danger_tween:
+		_danger_tween = create_tween()
+		_danger_tween.pause()
+	# Update_Tween
+	if _danger_tween.is_running() or (_is_countdown and _count < 6):
+		update_tween.kill()
 	else:
-		count_label.label_settings.font_size = 256
+		update_tween.tween_property(count_label, "scale", Vector2(0.75, 0.75), 0.125)
+		update_tween.tween_property(count_label, "scale", Vector2.ONE, 0.125)
+	# Danger_Tween
 	if _is_countdown and _count < 6:
-		count_label.label_settings.font_color = _danger_color
-	else:
-		count_label.label_settings.font_color = _default_color
-	if _is_countdown and 0 < _count and _count < 6:
-		await tween.finished
-		# TODO: animation
-		pass
+		if _count == 0:
+			_danger_tween.kill()
+			count_label.scale = Vector2.ONE
+		else:
+			if update_tween.is_running():
+				await update_tween.finished
+			if not _danger_tween.is_running():
+				_danger_tween.tween_property(count_label, "scale", Vector2(0.75, 0.75), 0.325)
+				_danger_tween.tween_property(count_label, "scale", Vector2.ONE, 0.325)
+				_danger_tween.set_loops()
+				_danger_tween.play()
+	#endregion Animations
