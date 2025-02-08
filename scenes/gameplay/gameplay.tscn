@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://btprlukab7rm8"]
+[gd_scene load_steps=9 format=3 uid="uid://btprlukab7rm8"]
 
 [ext_resource type="Script" path="res://scenes/gameplay/gameplay.gd" id="1_0cgb7"]
 [ext_resource type="PackedScene" uid="uid://bjhnrn4lipa27" path="res://scenes/board_sprites/board_sprites.tscn" id="1_aupdx"]
 [ext_resource type="PackedScene" uid="uid://dw1ve5kyd7seu" path="res://scenes/item/item.tscn" id="2_ec4vv"]
 [ext_resource type="Texture2D" uid="uid://5dba2i3omnr4" path="res://assets/sprites/placeholder/scoreboard_bg.png" id="4_rmydm"]
 [ext_resource type="PackedScene" uid="uid://cg3odyqy17w11" path="res://scenes/gameplay/counter.tscn" id="5_v2pq2"]
+[ext_resource type="Texture2D" uid="uid://pc7llpc3bo7p" path="res://assets/sprites/placeholder/x.png" id="6_bsm7k"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_8xnb8"]
 font_size = 154
@@ -87,13 +88,17 @@ layout_mode = 2
 focus_mode = 0
 text = "End Game"
 
-[node name="QuitButton" type="Button" parent="Debug Menu"]
-layout_mode = 2
-focus_mode = 0
-text = "Quit"
+[node name="Exit Button" type="TextureButton" parent="."]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -256.0
+offset_bottom = 256.0
+grow_horizontal = 0
+texture_normal = ExtResource("6_bsm7k")
 
 [connection signal="pressed" from="Debug Menu/SetMovesButton" to="." method="debug_set_moves"]
 [connection signal="pressed" from="Debug Menu/SetScoreButton" to="." method="debug_set_score"]
 [connection signal="pressed" from="Debug Menu/SummonButton" to="." method="debug_summon_item"]
 [connection signal="pressed" from="Debug Menu/EndGameButton" to="." method="debug_end_game"]
-[connection signal="pressed" from="Debug Menu/QuitButton" to="." method="debug_quit"]
+[connection signal="pressed" from="Exit Button" to="." method="exit_to_main_menu"]

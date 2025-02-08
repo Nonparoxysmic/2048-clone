@@ -132,6 +132,12 @@ func handle_game_end() -> void:
 		# TODO: add up rewards
 
 
+func exit_to_main_menu() -> void:
+	var parent: Main = get_parent() as Main
+	if parent:
+		parent.go_to_main_menu()
+
+
 func debug_end_game() -> void:
 	_game_ended = true
 	handle_game_end()
@@ -152,12 +158,6 @@ func debug_set_moves() -> void:
 	if _moves_made >= 150:
 		_game_ended = true
 		handle_game_end()
-
-
-func debug_quit() -> void:
-	var parent: Main = get_parent() as Main
-	if parent:
-		parent.go_to_main_menu()
 
 
 func debug_summon_item() -> void:
