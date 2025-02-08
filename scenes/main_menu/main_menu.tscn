@@ -29,6 +29,11 @@ layout_mode = 2
 focus_mode = 0
 text = "Sweet Shop"
 
+[node name="Padding" type="PanelContainer" parent="CenterContainer/MainButtons"]
+self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(0, 128)
+layout_mode = 2
+
 [node name="ClassicButton" type="Button" parent="CenterContainer/MainButtons"]
 custom_minimum_size = Vector2(2000, 400)
 layout_mode = 2
