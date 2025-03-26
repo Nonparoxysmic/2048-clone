@@ -15,40 +15,34 @@ var _prev_move_time: int = -1000
 @onready var debug_value: LineEdit = %DebugValue
 
 func _ready() -> void:
-	current_game_mode = GlobalData.game_mode
 	if not item_template:
 		var message: String = "Missing item scene reference in node " + name + "."
 		printerr(message)
 		OS.alert(message, "Error")
 		return
-	if not item_parent:
+	if not (background and item_parent and counter and game_over_label):
 		var message: String = "Missing node reference in node " + name + "."
 		printerr(message)
 		OS.alert(message, "Error")
 		return
+	
+	current_game_mode = GlobalData.game_mode
 	game_model = GameModel.new()
-	var connection_error: Error = game_model.connect("item_created", on_item_created)
+	
+	var connection_error: int = game_model.item_created.connect(on_item_created)
+	connection_error += game_model.item_moved.connect(on_item_moved)
+	connection_error += game_model.move_completed.connect(on_move_completed)
 	if connection_error:
 		var message: String = "Signal connection error in node " + name + "."
 		printerr(message)
 		OS.alert(message, "Error")
 		return
-	connection_error = game_model.connect("item_moved", on_item_moved)
-	if connection_error:
-		var message: String = "Signal connection error in node " + name + "."
-		printerr(message)
-		OS.alert(message, "Error")
-		return
-	connection_error = game_model.connect("move_completed", on_move_completed)
-	if connection_error:
-		var message: String = "Signal connection error in node " + name + "."
-		printerr(message)
-		OS.alert(message, "Error")
-		return
+	
 	if current_game_mode == Common.GameMode.CLASSIC:
 		counter.initialize("Score", 0, false)
 	elif current_game_mode == Common.GameMode.SWEET_SHOP:
 		counter.initialize("Moves Remaining", 150, true)
+	
 	game_model.start_game()
 
 
