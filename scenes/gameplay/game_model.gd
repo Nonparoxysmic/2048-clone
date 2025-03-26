@@ -15,18 +15,9 @@ func start_game() -> void:
 
 func handle_input(direction: Common.Direction) -> void:
 	awaiting_input = false
-	if direction:
-		if _board.can_move_direction(direction):
-			match direction:
-				Common.Direction.RIGHT:
-					move_right()
-				Common.Direction.DOWN:
-					move_down()
-				Common.Direction.LEFT:
-					move_left()
-				Common.Direction.UP:
-					move_up()
-			move_completed.emit()
+	if _board.can_move_direction(direction):
+		make_move(direction)
+		move_completed.emit()
 	awaiting_input = true
 
 
@@ -64,281 +55,98 @@ func get_current_item_ids() -> Array[int]:
 	return _board.get_all_ids()
 
 
-func move_right() -> void:
-	# for each row
-	for y: int in 4:
+func make_move(direction: Common.Direction) -> void:
+	if direction == Common.Direction.NONE:
+		return
+	
+	# set up coordinates
+	var para: Array[int] = [0, 1, 2, 3]
+	var perp: Array[int] = [0, 1, 2, 3]
+	var swap: bool = false
+	if direction == Common.Direction.RIGHT:
+		para.reverse()
+	if direction == Common.Direction.DOWN:
+		perp.reverse()
+	if direction == Common.Direction.DOWN or direction == Common.Direction.UP:
+		swap = true
+		var temp: Array[int] = para
+		para = perp
+		perp = temp
+	
+	for v: int in perp:
+		# for each line of motion
+		
 		# collect the positions, ids, and types of items
-		var init_x: Array[int] = []
+		var starts: Array[int] = []
 		var ids: Array[int] = []
 		var types: Array[Common.ItemType] = []
-		for x: int in range(3, -1, -1):
-			# check from right to left
+		for u: int in para:
+			# check opposite the direction of motion
+			var x: int = v if swap else u
+			var y: int = u if swap else v
 			if _board.get_item_id(x, y) > 0:
-				init_x.append(x)
+				starts.append(u)
 				ids.append(_board.get_item_id(x, y))
 				types.append(_board.get_item_type(x, y))
-		# if there are no items, this row is done
+		
+		# if there are no items, this line is done
 		if ids.is_empty():
 			continue
-		# determine which items will merge
+		
+		# keep track of which items will merge
 		var merges: Array[bool] = []
-		for i: int in ids.size():
+		for i: int in types.size():
 			merges.append(false)
-		if ids.size() > 1:
+		if types.size() > 1:
 			# mark the second item in each pair as merging
-			for i: int in (ids.size() - 1):
+			for i: int in (types.size() - 1):
 				if merges[i]:
 					continue
 				if types[i] == types[i + 1]:
 					merges[i + 1] = true
-		if merges.size() > 1:
 			# mark the first item in each pair as merging
 			for i: int in (ids.size() - 1):
 				if merges[i + 1]:
 					merges[i] = true
+		
 		# determine the moves
-		for new_x: int in range(3, -1, -1):
+		for new: int in para:
 			if ids.is_empty():
 				# all items moved
 				break
+			var old: int = starts.pop_front()
+			var id: int = ids.pop_front()
+			var type: Common.ItemType = types.pop_front()
+			var old_x: int = v if swap else old
+			var old_y: int = old if swap else v
+			var new_x: int = v if swap else new
+			var new_y: int = new if swap else v
 			if merges[0]:
 				# item is merging
 				# move and fade first item
-				var old_x: int = init_x.pop_front()
-				var id: int = ids.pop_front()
-				var type: Common.ItemType = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(old_x, y)
-				item_moved.emit(id, new_x, y, true)
+				_board.remove_item(old_x, old_y)
+				item_moved.emit(id, new_x, new_y, true)
 				# move and fade second item
-				old_x = init_x.pop_front()
+				merges.pop_front()
+				old = starts.pop_front()
 				id = ids.pop_front()
 				type = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(old_x, y)
-				item_moved.emit(id, new_x, y, true)
+				old_x = v if swap else old
+				old_y = old if swap else v
+				new_x = v if swap else new
+				new_y = new if swap else v
+				_board.remove_item(old_x, old_y)
+				item_moved.emit(id, new_x, new_y, true)
 				# spawn new item
 				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
-				var new_id: int = create_item(new_type, new_x, y, true)
-				_board.set_item(new_id, new_type, new_x, y)
+				var new_id: int = create_item(new_type, new_x, new_y, true)
+				_board.set_item(new_id, new_type, new_x, new_y)
 			else:
 				# item just slides
-				var old_x: int = init_x.pop_front()
-				var id: int = ids.pop_front()
-				var type: Common.ItemType = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(old_x, y)
-				_board.set_item(id, type, new_x, y)
-				item_moved.emit(id, new_x, y, false)
-	# after completing the player move, add a new item
-	create_new_item()
-
-
-func move_left() -> void:
-	# for each row
-	for y: int in 4:
-		# collect the positions, ids, and types of items
-		var init_x: Array[int] = []
-		var ids: Array[int] = []
-		var types: Array[Common.ItemType] = []
-		for x: int in 4:
-			# check from left to right
-			if _board.get_item_id(x, y) > 0:
-				init_x.append(x)
-				ids.append(_board.get_item_id(x, y))
-				types.append(_board.get_item_type(x, y))
-		# if there are no items, this row is done
-		if ids.is_empty():
-			continue
-		# determine which items will merge
-		var merges: Array[bool] = []
-		for i: int in ids.size():
-			merges.append(false)
-		if ids.size() > 1:
-			# mark the second item in each pair as merging
-			for i: int in (ids.size() - 1):
-				if merges[i]:
-					continue
-				if types[i] == types[i + 1]:
-					merges[i + 1] = true
-		if merges.size() > 1:
-			# mark the first item in each pair as merging
-			for i: int in (ids.size() - 1):
-				if merges[i + 1]:
-					merges[i] = true
-		# determine the moves
-		for new_x: int in 4:
-			if ids.is_empty():
-				# all items moved
-				break
-			if merges[0]:
-				# item is merging
-				# move and fade first item
-				var old_x: int = init_x.pop_front()
-				var id: int = ids.pop_front()
-				var type: Common.ItemType = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(old_x, y)
-				item_moved.emit(id, new_x, y, true)
-				# move and fade second item
-				old_x = init_x.pop_front()
-				id = ids.pop_front()
-				type = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(old_x, y)
-				item_moved.emit(id, new_x, y, true)
-				# spawn new item
-				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
-				var new_id: int = create_item(new_type, new_x, y, true)
-				_board.set_item(new_id, new_type, new_x, y)
-			else:
-				# item just slides
-				var old_x: int = init_x.pop_front()
-				var id: int = ids.pop_front()
-				var type: Common.ItemType = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(old_x, y)
-				_board.set_item(id, type, new_x, y)
-				item_moved.emit(id, new_x, y, false)
-	# after completing the player move, add a new item
-	create_new_item()
-
-
-func move_down() -> void:
-	# for each column
-	for x: int in 4:
-		# collect the positions, ids, and types of items
-		var init_y: Array[int] = []
-		var ids: Array[int] = []
-		var types: Array[Common.ItemType] = []
-		for y: int in range(3, -1, -1):
-			# check from bottom to top
-			if _board.get_item_id(x, y) > 0:
-				init_y.append(y)
-				ids.append(_board.get_item_id(x, y))
-				types.append(_board.get_item_type(x, y))
-		# if there are no items, this row is done
-		if ids.is_empty():
-			continue
-		# determine which items will merge
-		var merges: Array[bool] = []
-		for i: int in ids.size():
-			merges.append(false)
-		if ids.size() > 1:
-			# mark the second item in each pair as merging
-			for i: int in (ids.size() - 1):
-				if merges[i]:
-					continue
-				if types[i] == types[i + 1]:
-					merges[i + 1] = true
-		if merges.size() > 1:
-			# mark the first item in each pair as merging
-			for i: int in (ids.size() - 1):
-				if merges[i + 1]:
-					merges[i] = true
-		# determine the moves
-		for new_y: int in range(3, -1, -1):
-			if ids.is_empty():
-				# all items moved
-				break
-			if merges[0]:
-				# item is merging
-				# move and fade first item
-				var old_y: int = init_y.pop_front()
-				var id: int = ids.pop_front()
-				var type: Common.ItemType = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(x, old_y)
-				item_moved.emit(id, x, new_y, true)
-				# move and fade second item
-				old_y = init_y.pop_front()
-				id = ids.pop_front()
-				type = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(x, old_y)
-				item_moved.emit(id, x, new_y, true)
-				# spawn new item
-				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
-				var new_id: int = create_item(new_type, x, new_y, true)
-				_board.set_item(new_id, new_type, x, new_y)
-			else:
-				# item just slides
-				var old_y: int = init_y.pop_front()
-				var id: int = ids.pop_front()
-				var type: Common.ItemType = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(x, old_y)
-				_board.set_item(id, type, x, new_y)
-				item_moved.emit(id, x, new_y, false)
-	# after completing the player move, add a new item
-	create_new_item()
-
-
-func move_up() -> void:
-	# for each column
-	for x: int in 4:
-		# collect the positions, ids, and types of items
-		var init_y: Array[int] = []
-		var ids: Array[int] = []
-		var types: Array[Common.ItemType] = []
-		for y: int in 4:
-			# check from top to bottom
-			if _board.get_item_id(x, y) > 0:
-				init_y.append(y)
-				ids.append(_board.get_item_id(x, y))
-				types.append(_board.get_item_type(x, y))
-		# if there are no items, this row is done
-		if ids.is_empty():
-			continue
-		# determine which items will merge
-		var merges: Array[bool] = []
-		for i: int in ids.size():
-			merges.append(false)
-		if ids.size() > 1:
-			# mark the second item in each pair as merging
-			for i: int in (ids.size() - 1):
-				if merges[i]:
-					continue
-				if types[i] == types[i + 1]:
-					merges[i + 1] = true
-		if merges.size() > 1:
-			# mark the first item in each pair as merging
-			for i: int in (ids.size() - 1):
-				if merges[i + 1]:
-					merges[i] = true
-		# determine the moves
-		for new_y: int in 4:
-			if ids.is_empty():
-				# all items moved
-				break
-			if merges[0]:
-				# item is merging
-				# move and fade first item
-				var old_y: int = init_y.pop_front()
-				var id: int = ids.pop_front()
-				var type: Common.ItemType = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(x, old_y)
-				item_moved.emit(id, x, new_y, true)
-				# move and fade second item
-				old_y = init_y.pop_front()
-				id = ids.pop_front()
-				type = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(x, old_y)
-				item_moved.emit(id, x, new_y, true)
-				# spawn new item
-				var new_type: Common.ItemType = ((type + 1) % Common.ItemType.size()) as Common.ItemType
-				var new_id: int = create_item(new_type, x, new_y, true)
-				_board.set_item(new_id, new_type, x, new_y)
-			else:
-				# item just slides
-				var old_y: int = init_y.pop_front()
-				var id: int = ids.pop_front()
-				var type: Common.ItemType = types.pop_front()
-				merges.pop_front()
-				_board.remove_item(x, old_y)
-				_board.set_item(id, type, x, new_y)
-				item_moved.emit(id, x, new_y, false)
+				_board.remove_item(old_x, old_y)
+				_board.set_item(id, type, new_x, new_y)
+				item_moved.emit(id, new_x, new_y, false)
+			merges.pop_front()
+	
 	# after completing the player move, add a new item
 	create_new_item()
