@@ -29,17 +29,21 @@ func create_item(type: Common.ItemType, x: int, y: int, merge: bool) -> int:
 	return id
 
 
-func create_new_item() -> int:
+func create_new_item() -> void:
 	var pos: Vector2i = _board.random_empty_position()
+	if pos == Vector2i.MIN:
+		return
 	var is_berry: bool = randf() <= 0.9
 	if is_berry:
-		return create_item(Common.ItemType.BERRY_2, pos.x, pos.y, false)
+		create_item(Common.ItemType.BERRY_2, pos.x, pos.y, false)
 	else:
-		return create_item(Common.ItemType.JUICE_4, pos.x, pos.y, false)
+		create_item(Common.ItemType.JUICE_4, pos.x, pos.y, false)
 
 
 func debug_create_item(type: Common.ItemType) -> void:
 	var pos: Vector2i = _board.random_empty_position()
+	if pos == Vector2i.MIN:
+		return
 	var new_id: int = create_item(type, pos.x, pos.y, false)
 	_board.set_item(new_id, type, pos.x, pos.y)
 

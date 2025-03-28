@@ -67,5 +67,7 @@ func random_empty_position() -> Vector2i:
 		var pos: Vector2i = Vector2i(i % 4, i / 4)
 		if get_item_id(pos.x, pos.y) == 0:
 			empty.append(Vector2i(pos.x, pos.y))
+	if empty.is_empty():
+		return Vector2i.MIN
 	var i: int = randi_range(0, empty.size() - 1)
 	return empty[i]
