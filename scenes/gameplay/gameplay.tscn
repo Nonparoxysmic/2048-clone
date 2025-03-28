@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://btprlukab7rm8"]
+[gd_scene load_steps=15 format=3 uid="uid://btprlukab7rm8"]
 
 [ext_resource type="Script" path="res://scenes/gameplay/gameplay.gd" id="1_0cgb7"]
 [ext_resource type="PackedScene" uid="uid://bjhnrn4lipa27" path="res://scenes/board_sprites/board_sprites.tscn" id="1_aupdx"]
@@ -6,10 +6,24 @@
 [ext_resource type="Texture2D" uid="uid://5dba2i3omnr4" path="res://assets/sprites/placeholder/scoreboard_bg.png" id="4_rmydm"]
 [ext_resource type="PackedScene" uid="uid://cg3odyqy17w11" path="res://scenes/gameplay/counter.tscn" id="5_v2pq2"]
 [ext_resource type="Texture2D" uid="uid://pc7llpc3bo7p" path="res://assets/sprites/placeholder/x.png" id="6_bsm7k"]
+[ext_resource type="Texture2D" uid="uid://doxsj3cs1jed4" path="res://assets/sprites/placeholder/rewards/star1.png" id="6_hmmuq"]
+[ext_resource type="Texture2D" uid="uid://hp5mwa16py3e" path="res://assets/sprites/placeholder/rewards/bolt1.png" id="7_nmxie"]
+[ext_resource type="Texture2D" uid="uid://c630khqke3cqr" path="res://assets/sprites/missing_item_texture.png" id="8_tj7io"]
+[ext_resource type="Texture2D" uid="uid://dn7okp7st8l62" path="res://assets/sprites/placeholder/claim.png" id="10_nq5tj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_8xnb8"]
 font_size = 154
 outline_size = 30
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_eri1f"]
+font_size = 192
+outline_size = 48
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_22pkc"]
+font_size = 192
+outline_size = 48
 outline_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Theme" id="Theme_071mw"]
@@ -47,8 +61,73 @@ offset_bottom = 1436.0
 text = "Game completed"
 label_settings = SubResource("LabelSettings_8xnb8")
 
-[node name="Debug Menu" type="HBoxContainer" parent="."]
+[node name="PointsUI" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PointsUI"]
+layout_mode = 2
+
+[node name="HBoxContainer1" type="HBoxContainer" parent="PointsUI/HBoxContainer"]
 visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PointsUI/HBoxContainer/HBoxContainer1"]
+layout_mode = 2
+texture = ExtResource("6_hmmuq")
+
+[node name="Points1Label" type="Label" parent="PointsUI/HBoxContainer/HBoxContainer1"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0  "
+label_settings = SubResource("LabelSettings_eri1f")
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="PointsUI/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PointsUI/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+texture = ExtResource("7_nmxie")
+
+[node name="Points2Label" type="Label" parent="PointsUI/HBoxContainer/HBoxContainer2"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0  "
+label_settings = SubResource("LabelSettings_eri1f")
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="PointsUI/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PointsUI/HBoxContainer/HBoxContainer3"]
+layout_mode = 2
+texture = ExtResource("8_tj7io")
+
+[node name="Points3Label" type="Label" parent="PointsUI/HBoxContainer/HBoxContainer3"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0  "
+label_settings = SubResource("LabelSettings_eri1f")
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="PointsUI/HBoxContainer"]
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="PointsUI/HBoxContainer/HBoxContainer4"]
+layout_mode = 2
+texture = ExtResource("8_tj7io")
+
+[node name="Points4Label" type="Label" parent="PointsUI/HBoxContainer/HBoxContainer4"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "0  "
+label_settings = SubResource("LabelSettings_22pkc")
+
+[node name="Debug Menu" type="HBoxContainer" parent="."]
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
@@ -97,6 +176,23 @@ offset_left = -256.0
 offset_bottom = 256.0
 grow_horizontal = 0
 texture_normal = ExtResource("6_bsm7k")
+
+[node name="ClaimButton" type="TextureButton" parent="."]
+unique_name_in_owner = true
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -848.0
+offset_right = 400.0
+offset_bottom = -608.0
+grow_horizontal = 2
+grow_vertical = 0
+disabled = true
+texture_normal = ExtResource("10_nq5tj")
 
 [connection signal="pressed" from="Debug Menu/SetMovesButton" to="." method="debug_set_moves"]
 [connection signal="pressed" from="Debug Menu/SetScoreButton" to="." method="debug_set_score"]

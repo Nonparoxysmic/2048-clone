@@ -18,7 +18,11 @@ func _init() -> void:
 
 
 func get_all_ids() -> Array[int]:
-	return _ids
+	var nonzero: Array[int] = []
+	for id: int in _ids:
+		if id > 0:
+			nonzero.append(id)
+	return nonzero
 
 
 func get_item_id(x: int, y: int) -> int:

@@ -38,3 +38,43 @@ static func format_number(input: int) -> String:
 			result += ","
 		result += string[i]
 	return result
+
+
+static func get_reward_level(item_type: ItemType) -> int:
+	if item_type < 13:
+		return (item_type + 3) / 4
+	return 4
+
+
+static func get_reward_quantity(item_type: ItemType) -> int:
+	match item_type:
+		Common.ItemType.NONE:
+			return 0
+		Common.ItemType.BERRY_2:
+			return 5
+		Common.ItemType.JUICE_4:
+			return 10
+		Common.ItemType.COOKIE_8:
+			return 20
+		Common.ItemType.TART_16:
+			return 50
+		Common.ItemType.CAKE_PLAIN_32:
+			return 3
+		Common.ItemType.CAKE_FROSTED_64:
+			return 7
+		Common.ItemType.CAKE_DECORATED_128:
+			return 15
+		Common.ItemType.PACKAGE_256:
+			return 40
+		Common.ItemType.ICE_CREAM_CONE_512:
+			return 1
+		Common.ItemType.SUNDAE_1024:
+			return 4
+		Common.ItemType.BANANA_SPLIT_2048:
+			return 10
+		# TODO: next item returns 30
+		#Common.ItemType.________: 
+			#return 30
+		_:
+			@warning_ignore("narrowing_conversion")
+			return pow(4, item_type - 10)
