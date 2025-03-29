@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://btprlukab7rm8"]
+[gd_scene load_steps=16 format=3 uid="uid://btprlukab7rm8"]
 
 [ext_resource type="Script" path="res://scenes/gameplay/gameplay.gd" id="1_0cgb7"]
 [ext_resource type="PackedScene" uid="uid://bjhnrn4lipa27" path="res://scenes/board_sprites/board_sprites.tscn" id="1_aupdx"]
@@ -8,7 +8,8 @@
 [ext_resource type="Texture2D" uid="uid://pc7llpc3bo7p" path="res://assets/sprites/placeholder/x.png" id="6_bsm7k"]
 [ext_resource type="Texture2D" uid="uid://doxsj3cs1jed4" path="res://assets/sprites/placeholder/rewards/star1.png" id="6_hmmuq"]
 [ext_resource type="Texture2D" uid="uid://hp5mwa16py3e" path="res://assets/sprites/placeholder/rewards/bolt1.png" id="7_nmxie"]
-[ext_resource type="Texture2D" uid="uid://c630khqke3cqr" path="res://assets/sprites/missing_item_texture.png" id="8_tj7io"]
+[ext_resource type="Texture2D" uid="uid://diyhw6l7sf5d8" path="res://assets/sprites/placeholder/rewards/heart1.png" id="8_3x0k7"]
+[ext_resource type="Texture2D" uid="uid://b3kkmfeh7aljr" path="res://assets/sprites/placeholder/rewards/paw1.png" id="9_sfxl5"]
 [ext_resource type="Texture2D" uid="uid://dn7okp7st8l62" path="res://assets/sprites/placeholder/claim.png" id="10_nq5tj"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_8xnb8"]
@@ -105,7 +106,7 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="PointsUI/HBoxContainer/HBoxContainer3"]
 layout_mode = 2
-texture = ExtResource("8_tj7io")
+texture = ExtResource("8_3x0k7")
 
 [node name="Points3Label" type="Label" parent="PointsUI/HBoxContainer/HBoxContainer3"]
 unique_name_in_owner = true
@@ -119,7 +120,7 @@ layout_mode = 2
 
 [node name="TextureRect" type="TextureRect" parent="PointsUI/HBoxContainer/HBoxContainer4"]
 layout_mode = 2
-texture = ExtResource("8_tj7io")
+texture = ExtResource("9_sfxl5")
 
 [node name="Points4Label" type="Label" parent="PointsUI/HBoxContainer/HBoxContainer4"]
 unique_name_in_owner = true

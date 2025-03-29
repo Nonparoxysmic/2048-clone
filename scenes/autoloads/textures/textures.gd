@@ -35,9 +35,14 @@ func _ready() -> void:
 		load("res://assets/sprites/placeholder/rewards/bolt2.png") as Texture2D,
 		load("res://assets/sprites/placeholder/rewards/bolt3.png") as Texture2D,
 		load("res://assets/sprites/placeholder/rewards/bolt4.png") as Texture2D,
-		load("res://assets/sprites/missing_item_texture.png") as Texture2D,
-		load("res://assets/sprites/missing_item_texture.png") as Texture2D,
-		load("res://assets/sprites/missing_item_texture.png") as Texture2D,
+		load("res://assets/sprites/placeholder/rewards/heart1.png") as Texture2D,
+		load("res://assets/sprites/placeholder/rewards/heart2.png") as Texture2D,
+		load("res://assets/sprites/placeholder/rewards/heart3.png") as Texture2D,
+		load("res://assets/sprites/placeholder/rewards/heart4.png") as Texture2D,
+		load("res://assets/sprites/placeholder/rewards/paw1.png") as Texture2D,
+		load("res://assets/sprites/placeholder/rewards/paw2.png") as Texture2D,
+		load("res://assets/sprites/placeholder/rewards/paw3.png") as Texture2D,
+		load("res://assets/sprites/placeholder/rewards/paw4.png") as Texture2D,
 	]
 	for texture: Texture2D in _reward_textures:
 		if not texture:
@@ -76,6 +81,8 @@ func get_item_texture(type: Common.ItemType) -> Texture2D:
 
 func get_reward_texture(type: Common.ItemType) -> Texture2D:
 	match type:
+		Common.ItemType.NONE:
+			return _reward_textures[0]
 		Common.ItemType.BERRY_2:
 			return _reward_textures[1]
 		Common.ItemType.JUICE_4:
@@ -98,5 +105,14 @@ func get_reward_texture(type: Common.ItemType) -> Texture2D:
 			return _reward_textures[10]
 		Common.ItemType.BANANA_SPLIT_2048:
 			return _reward_textures[11]
+		# TODO: next items
+		#Common.ItemType.________:
+			#return _reward_textures[12]
+		#Common.ItemType.________:
+			#return _reward_textures[13]
+		#Common.ItemType.________:
+			#return _reward_textures[14]
+		#Common.ItemType.________:
+			#return _reward_textures[15]
 		_:
-			return _reward_textures[0]
+			return _reward_textures[16]
