@@ -1,5 +1,5 @@
 class_name Item
-extends Node2D
+extends PathFollow2D
 
 signal points_scored(level: int, points: int)
 @export var sprite: Sprite2D
@@ -60,13 +60,31 @@ func move_and_score() -> void:
 		queue_free()
 		return
 	
+	var path: Path2D = construct_path(Vector2(1920, 1152))
+	get_parent().add_child(path)
+	path.position = position
+	reparent(path)
+	
 	var tween: Tween = create_tween()
-	var new_pos: Vector2 = Vector2(1920, 1152)
-	tween.tween_property(self, "position", new_pos, _slide_time)
+	tween.tween_property(self, "progress_ratio", 1.0, _slide_time)
 	tween.parallel() \
 	.tween_property(reward_sprite, "scale", Vector2(0.5, 0.5), _slide_time)
 	await tween.finished
 	
 	var points: int = Common.get_reward_quantity(item_type)
 	points_scored.emit(reward_level, points)
-	queue_free()
+	path.queue_free()
+
+
+func construct_path(target: Vector2) -> Path2D:
+	target = target - position
+	var path: Path2D = Path2D.new()
+	var curve: Curve2D
+	
+	if abs(target.x) < 50 or abs(target.y) < 50:
+		curve = Common.linear_curve(target)
+	else:
+		curve = Common.parabolic_curve(target)
+	
+	path.curve = curve
+	return path

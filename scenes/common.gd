@@ -40,6 +40,24 @@ static func format_number(input: int) -> String:
 	return result
 
 
+static func linear_curve(target: Vector2) -> Curve2D:
+	var curve: Curve2D = Curve2D.new()
+	curve.add_point(Vector2(0, 0))
+	curve.add_point(target)
+	return curve
+
+
+static func parabolic_curve(target: Vector2, steps: int = 10) -> Curve2D:
+	var curve: Curve2D = Curve2D.new()
+	var a: float = target.y / pow(target.x, 2.0)
+	for i: int in range(0, steps):
+		var x: float = i * target.x / steps
+		var y: float = a * pow(x, 2.0)
+		curve.add_point(Vector2(x, y))
+	curve.add_point(target)
+	return curve
+
+
 static func get_reward_level(item_type: ItemType) -> int:
 	if item_type < 13:
 		return (item_type + 3) / 4

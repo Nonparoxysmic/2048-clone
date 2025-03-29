@@ -2,7 +2,9 @@
 
 [ext_resource type="Script" path="res://scenes/item/item.gd" id="1_k7o8q"]
 
-[node name="Item" type="Node2D" node_paths=PackedStringArray("sprite", "reward_sprite")]
+[node name="Item" type="PathFollow2D" node_paths=PackedStringArray("sprite", "reward_sprite")]
+rotates = false
+loop = false
 script = ExtResource("1_k7o8q")
 sprite = NodePath("ItemSprite")
 reward_sprite = NodePath("RewardSprite")
