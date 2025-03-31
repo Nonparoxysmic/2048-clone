@@ -118,7 +118,36 @@ func on_points_scored(level: int, points: int) -> void:
 
 
 func on_claim_button_pressed() -> void:
-	# TODO: final animations
+	claim_button.disabled = true
+	var button_tween: Tween = get_tree().create_tween()
+	button_tween.tween_property(claim_button, "self_modulate", Color.TRANSPARENT, 0.25)
+	var labels: Array[Label] = [
+		null,
+		%Points1Label as Label,
+		%Points2Label as Label,
+		%Points3Label as Label,
+		%Points4Label as Label,
+	]
+	var targets: Array[Vector2] = [
+		Vector2.ZERO,
+		Vector2.ZERO,
+		Vector2(1920, 0),
+		Vector2(3584, 0),
+		Vector2(3584, 256),
+	]
+	for i: int in range(1, 5):
+		var parent: Control = labels[i].get_parent()
+		if parent.visible:
+			parent.visible = false
+			if reward_points[i]:
+				var pos: Vector2 = labels[i].global_position - Vector2(384, 0)
+				var reward: Item = spawn_reward(i, pos)
+				reward.move_out_async(targets[i], 0.25, Vector2(0.75, 0.75))
+		elif reward_points[i]:
+			var message: String = "This shouldn't happen. (invisible points)"
+			printerr(message)
+			OS.alert(message, "Error")
+	await get_tree().create_timer(0.5). timeout
 	exit_to_main_menu()
 
 
@@ -135,6 +164,16 @@ func spawn_item(id: int, type: Common.ItemType, x: int, y: int) -> Item:
 	instance.position = Vector2(384 + 512 * x, 384 + 512 * y)
 	instance.last_diagonal = x + y
 	instance.reveal()
+	return instance
+
+
+func spawn_reward(level: int, pos: Vector2) -> Item:
+	var instance: Item = item_template.instantiate() as Item
+	instance.name = "Reward" + str(level)
+	item_parent.add_child(instance)
+	instance.set_sprite_textures((level - 1) * 4 + 1)
+	instance.position = pos
+	instance.instant_reward()
 	return instance
 
 
