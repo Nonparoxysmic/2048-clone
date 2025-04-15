@@ -26,6 +26,12 @@ enum ItemType {
 	ICE_CREAM_CONE_512,
 	SUNDAE_1024,
 	BANANA_SPLIT_2048,
+	ULTIMATE_ICE_CREAM_4096,
+	WRAPPED_CANDY_8192,
+	LOLLIPOP_16_384,
+	CANDY_CANE_32_768,
+	PB_CUP_65_536,
+	MAXIMUM_131_072,
 }
 
 
@@ -90,9 +96,8 @@ static func get_reward_quantity(item_type: ItemType) -> int:
 			return 4
 		Common.ItemType.BANANA_SPLIT_2048:
 			return 10
-		# TODO: next item returns 30
-		#Common.ItemType.________: 
-			#return 30
+		Common.ItemType.ULTIMATE_ICE_CREAM_4096: 
+			return 30
 		_:
 			@warning_ignore("narrowing_conversion")
 			return pow(4, item_type - 10)

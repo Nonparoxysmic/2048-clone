@@ -19,6 +19,13 @@ func _ready() -> void:
 		load("res://assets/sprites/placeholder/ice_cream.png") as Texture2D,
 		load("res://assets/sprites/placeholder/sundae.png") as Texture2D,
 		load("res://assets/sprites/placeholder/banana_split.png") as Texture2D,
+		# TODO: add missing textures
+		load("res://assets/sprites/missing_item_texture.png") as Texture2D,
+		load("res://assets/sprites/missing_item_texture.png") as Texture2D,
+		load("res://assets/sprites/missing_item_texture.png") as Texture2D,
+		load("res://assets/sprites/missing_item_texture.png") as Texture2D,
+		load("res://assets/sprites/missing_item_texture.png") as Texture2D,
+		load("res://assets/sprites/missing_item_texture.png") as Texture2D,
 	]
 	for texture: Texture2D in _item_textures:
 		if not texture:
@@ -75,6 +82,18 @@ func get_item_texture(type: Common.ItemType) -> Texture2D:
 			return _item_textures[10]
 		Common.ItemType.BANANA_SPLIT_2048:
 			return _item_textures[11]
+		Common.ItemType.ULTIMATE_ICE_CREAM_4096:
+			return _item_textures[12]
+		Common.ItemType.WRAPPED_CANDY_8192:
+			return _item_textures[13]
+		Common.ItemType.LOLLIPOP_16_384:
+			return _item_textures[14]
+		Common.ItemType.CANDY_CANE_32_768:
+			return _item_textures[15]
+		Common.ItemType.PB_CUP_65_536:
+			return _item_textures[16]
+		Common.ItemType.MAXIMUM_131_072:
+			return _item_textures[17]
 		_:
 			return _item_textures[0]
 
@@ -105,14 +124,13 @@ func get_reward_texture(type: Common.ItemType) -> Texture2D:
 			return _reward_textures[10]
 		Common.ItemType.BANANA_SPLIT_2048:
 			return _reward_textures[11]
-		# TODO: next items
-		#Common.ItemType.________:
-			#return _reward_textures[12]
-		#Common.ItemType.________:
-			#return _reward_textures[13]
-		#Common.ItemType.________:
-			#return _reward_textures[14]
-		#Common.ItemType.________:
-			#return _reward_textures[15]
+		Common.ItemType.ULTIMATE_ICE_CREAM_4096:
+			return _reward_textures[12]
+		Common.ItemType.WRAPPED_CANDY_8192:
+			return _reward_textures[13]
+		Common.ItemType.LOLLIPOP_16_384:
+			return _reward_textures[14]
+		Common.ItemType.CANDY_CANE_32_768:
+			return _reward_textures[15]
 		_:
 			return _reward_textures[16]
