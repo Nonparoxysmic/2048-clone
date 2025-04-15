@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cnf0i31bf84gc"]
 
-[ext_resource type="Script" path="res://scenes/autoloads/textures/textures.gd" id="1_poloy"]
+[ext_resource type="Script" uid="uid://y2psc3lesdth" path="res://scenes/autoloads/textures/textures.gd" id="1_poloy"]
 
 [node name="Textures" type="Node"]
 script = ExtResource("1_poloy")

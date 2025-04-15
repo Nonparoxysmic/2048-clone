@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dei4tmsdjulgg"]
 
-[ext_resource type="Script" path="res://scenes/autoloads/high_scores/high_scores.gd" id="1_1jjjc"]
+[ext_resource type="Script" uid="uid://ia33jgusemmk" path="res://scenes/autoloads/high_scores/high_scores.gd" id="1_1jjjc"]
 
 [node name="High Scores" type="Node"]
 script = ExtResource("1_1jjjc")

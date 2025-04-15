@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cg3odyqy17w11"]
 
-[ext_resource type="Script" path="res://scenes/gameplay/counter.gd" id="1_4tc6r"]
+[ext_resource type="Script" uid="uid://di4evne2x7ck7" path="res://scenes/gameplay/counter.gd" id="1_4tc6r"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_d2oko"]
 font_size = 128
